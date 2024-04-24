@@ -1,33 +1,12 @@
 import { useState } from "react";
-import { useEffect } from "react";
 
 function App(){
-  const [todos, setTodos] = useState([])
-
-  useEffect(() => {
-    setInterval(()=> {
-      fetch("https://sum-server.100xdevs.com/todos")
-      .then(async function(res){
-       const json = await res.json();
-      //  console.log(json)
-       setTodos(json.todos);
-     })
-    },1000)
-  },[])
+  const[count, setCount] = useState(0)
 
   return <div>
-    {todos.map(todo => <Todo key={todo.id} title={todo.title} description={todo.description}></Todo>)}
+    <button onClick={function(){
+      setCount(count+1);
+    }}>Click me {count}</button>
   </div>
 }
-function Todo({title, description}) {
-  <div>
-    <h1>
-      {title}
-    </h1>
-    <h4>
-      {description}
-    </h4>
-  </div>
-}
-
 export default App;
