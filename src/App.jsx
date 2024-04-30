@@ -1,47 +1,36 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from 'axios';
+import { useMemo, useState } from "react";
 
-function App(){
-  const [selectedId, setSelectedId] = useState(1);
-  return <div>
-  <button onClick={function(){
-    setSelectedId(1);
-  }}>1</button>
-    <button onClick={function(){
-    setSelectedId(2);
-  }}>2</button>
-    <button onClick={function(){
-    setSelectedId(3);
-  }}>3</button>
-    <button onClick={function(){
-    setSelectedId(4);
-  }}>4</button>
-    <Todo id ={selectedId} />
-  </div>
-}
+function App() {
+  const [counter, setCounter] = useState(0);
+  const [inputValue, setInputValue] = useState(1);
 
-function Todo({id}){
-  const [todo, setTodo] = useState({});
+  let count = useMemo(() => {
+    let count = 0;
+    for (let i = 1; i <= parseInt(inputValue); i++) { // Convert inputValue to a number
+      count += i;
+    }
+    return count;
+  }, [inputValue]);
 
-  useEffect(()=>{
-    axios.get(`https://sum-server.100xdevs.com/todo?id=${id}`)
-      .then(response =>{
-        setTodo(response.data.todo)
-      })
-  },[id])
-
-
-
-  return <div>
-  Id:{id}
-    <h1>
-      {todo.title}
-    </h1>
-    <h4>
-      {todo.description}
-    </h4>
-  </div>
+  return (
+    <div>
+      <input
+        type="number" // Specify input type as number
+        value={inputValue}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+        }}
+        placeholder={"find sum from 1 to n"}
+      />
+      <br />
+      sum from 1 to {inputValue} is {count}
+      <br />
+      <button onClick={() => {
+        setCounter(counter + 1);
+      }}>counter {counter}
+      </button>
+    </div>
+  );
 }
 
 export default App;
